@@ -1,5 +1,6 @@
 # Project4_Blog
 Project4-Blog应用程序设计（2022280432）
+```bash
 Project4/
 ├── accounts/ # 用户认证应用 (课程示例代码)
 ├── learning_logs/ # 学习日志应用 (课程示例代码)
@@ -26,7 +27,8 @@ Project4/
 │ └── wsgi.py
 └── manage.py # Django管理脚本（课程示例代码提供）
 实验用到的命令行指令：
-# 应用数据库迁移
+应用数据库迁移
 python manage.py migrate
-# 创建超级用户
+创建超级用户
 python manage.py createsuperuser
+```

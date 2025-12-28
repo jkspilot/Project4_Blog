@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的博客</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .post { background: #f9f9f9; border-left: 4px solid #007bff; padding: 15px; margin: 20px 0; }
+        .post h2 { margin-top: 0; color: #007bff; }
+        .post-meta { color: #666; font-size: 0.9em; margin: 5px 0; }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #545b62; }
+        .actions { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>📝 博客文章</h1>
+    
+    <!-- 登录状态显示 -->
+    <div style="margin: 20px 0;">
+        {% if user.is_authenticated %}
+            <p>欢迎，{{ user.username }}！ 
+                <a href="{% url 'blogs:new_post' %}" class="btn">✏️ 写新文章</a>
+                <a href="{% url 'accounts:logout' %}" class="btn btn-secondary">退出登录</a>
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'accounts:login' %}" class="btn">🔑 登录</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-secondary">📝 注册</a>
+                后即可发布文章
+            </p>
+        {% endif %}
+    </div>
+    
+    <!-- 文章列表 -->
+    {% for post in posts %}
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <div class="post-meta">
+            👤 作者：{{ post.owner.username }} | 
+            📅 时间：{{ post.date_added|date:"Y年m月d日 H:i" }}
+        </div>
+        <p>{{ post.text|truncatewords:50 }}</p>
+        
+        <div class="actions">
+            <a href="{% url 'blogs:detail' post.id %}" class="btn">阅读全文</a>
+            {% if user == post.owner %}
+                <a href="{% url 'blogs:edit_post' post.id %}" class="btn btn-secondary">编辑</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="post">
+        <p>还没有文章。{% if user.is_authenticated %}快去发布第一篇吧！{% else %}登录后即可开始写作。{% endif %}</p>
+    </div>
+    {% endfor %}
+    
+    <hr>
+    <p style="text-align: center; color: #666;">
+        共 {{ posts|length }} 篇文章 | 
+        <a href="{% url 'learning_logs:index' %}">返回学习日志</a>
+    </p>
+</body>
+</html>

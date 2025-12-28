@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑文章</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; }
+        form div { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 300px; font-family: monospace; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .btn-cancel { display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px; }
+        .btn-cancel:hover { background: #545b62; }
+        .original-post { background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #007bff; }
+    </style>
+</head>
+<body>
+    <h1>📝 编辑文章</h1>
+    
+    <div class="original-post">
+        <strong>原始信息：</strong><br>
+        标题：{{ post.title }}<br>
+        作者：{{ post.owner.username }}<br>
+        创建时间：{{ post.date_added|date:"Y-m-d H:i" }}
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div>
+            <label for="id_title">新标题：</label>
+            <input type="text" name="title" id="id_title" value="{{ form.title.value|default:post.title }}" maxlength="200" required>
+        </div>
+        
+        <div>
+            <label for="id_text">新内容：</label>
+            <textarea name="text" id="id_text" required>{{ form.text.value|default:post.text }}</textarea>
+        </div>
+        
+        <div>
+            <button type="submit">保存修改</button>
+            <a href="{% url 'blogs:detail' post.id %}" class="btn-cancel">取消</a>
+        </div>
+    </form>
+    
+    <hr>
+    <p>
+        <a href="{% url 'blogs:detail' post.id %}">← 返回文章详情</a> | 
+        <a href="{% url 'blogs:index' %}">返回首页</a>
+    </p>
+</body>
+</html>

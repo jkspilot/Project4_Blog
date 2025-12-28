@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>发布新文章</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; }
+        form div { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 200px; font-family: monospace; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #218838; }
+        .btn-cancel { display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px; }
+        .btn-cancel:hover { background: #545b62; }
+        .error { color: #dc3545; font-size: 0.9em; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>✏️ 发布新文章</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div>
+            <label for="id_title">标题：</label>
+            <input type="text" name="title" id="id_title" maxlength="200" required placeholder="请输入文章标题">
+            {% if form.title.errors %}
+                <div class="error">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="id_text">内容：</label>
+            <textarea name="text" id="id_text" required placeholder="请输入文章内容..."></textarea>
+            {% if form.text.errors %}
+                <div class="error">{{ form.text.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <button type="submit">发布文章</button>
+            <a href="{% url 'blogs:index' %}" class="btn-cancel">取消</a>
+        </div>
+    </form>
+    
+    <hr>
+    <p><a href="{% url 'blogs:index' %}">← 返回博客首页</a></p>
+</body>
+</html>
